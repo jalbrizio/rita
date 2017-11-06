@@ -78,23 +78,23 @@ __install() {
 		fi
 	fi
 
-	echo "[+] Updating apt...
+	echo "[+] Updating yum...
 "
 
-	apt update -qq
+	sudo yum -y update
 
 	echo "
 [+] Ensuring git is installed...
 "
-	apt install -y git
+	sudo yum -y install git
 	echo "
 [+] Ensuring bro is installed...
 "
-	if [ $(dpkg-query -W -f='${Status}' bro 2>/dev/null | grep -c "ok installed") -eq 0 ] &&
-	[ $(dpkg-query -W -f='${Status}' securityonion-bro 2>/dev/null | grep -c "ok installed") -eq 0 ]
+        if [ $(rpm -q bro | grep -c "bro\-") -eq 0 ] &&
+        [ $(rpm -q bro | grep -c "bro\-") -eq 0 ]
 	then
-		apt install -y bro
-		apt install -y broctl
+                sudo yum -y install bro
+                sudo yum -y install broctl
 	fi
 
 	echo "
@@ -118,9 +118,9 @@ __install() {
 		export PATH="$PATH:/usr/local/go/bin"
 	else
 		echo -e "\e[31m[-] WARNING: Go has been detected on this system,\e[37m if you
-installed with apt, RITA has only been tested with golang 1.7 which is currently not the
-version in the Ubuntu apt repositories, make sure your golang is up to date
-with 'go version'. Otherwise you can remove with 'sudo apt remove golang' and let this script
+installed with yum, RITA has only been tested with golang 1.7 which is currently not the
+version in the Ubuntu yum repositories, make sure your golang is up to date
+with 'go version'. Otherwise you can remove with 'sudo yum remove golang' and let this script
 install the correct version for you!
 "
 
@@ -151,18 +151,18 @@ install the correct version for you!
 
 	sleep 3s
 
-	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+	#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
 
-	echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/3.4 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.4.list
+#	echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/3.4 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.4.list
 
-	apt update -qq
-	apt install -y mongodb-org
+	sudo yum -y update
+	yum -y insstall mongodb
 
 	printf "\n[+] Running 'go get github.com/ocmdev/rita...'\n\n"
 
 	# Build RITA
 
-	apt install -y build-essential
+        sudo yum -y groupinstall "Development Tools"
 	go get github.com/ocmdev/rita
 	printf "[+] Installing RITA...\n\n"
 	cd $GOPATH/src/github.com/ocmdev/rita
