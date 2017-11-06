@@ -156,7 +156,7 @@ install the correct version for you!
 #	echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/3.4 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.4.list
 
 	sudo yum -y update
-	yum -y insstall mongodb
+	yum -y install mongodb
 
 	printf "\n[+] Running 'go get github.com/ocmdev/rita...'\n\n"
 
