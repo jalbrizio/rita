@@ -80,13 +80,21 @@ __install() {
 
 	echo "[+] Updating yum...
 "
+cat > /etc/yum.repos.d/mongodb-org.repo << EOF
+[mongodb-org-3.4]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/7Server/mongodb-org/3.4/\$basearch
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc
 
+EOF
 	sudo yum -y update
 
 	echo "
 [+] Ensuring git is installed...
 "
-	sudo yum -y install git
+	sudo yum -y install git vim net-tools
 	echo "
 [+] Ensuring bro is installed...
 "
@@ -156,7 +164,7 @@ install the correct version for you!
 #	echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/3.4 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.4.list
 
 	sudo yum -y update
-	yum -y install mongodb
+	yum -y install mongodb-org
 
 	printf "\n[+] Running 'go get github.com/ocmdev/rita...'\n\n"
 
